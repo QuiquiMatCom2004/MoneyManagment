@@ -1,4 +1,5 @@
-﻿using Domain.ValueObjects;
+﻿using Domain.Exceptions;
+using Domain.ValueObjects;
 
 namespace Domain.Abstractions
 {
@@ -20,11 +21,11 @@ namespace Domain.Abstractions
             }
             if (value.Amount < 0)
             {
-                throw new ArgumentOutOfRangeException(nameof(value), "Value cannot be negative.");
+                throw new MoneyNotValidException(value);
             }
             if (dateAcquired > DateTime.Now)
             {
-                throw new ArgumentOutOfRangeException(nameof(dateAcquired), "Date acquired cannot be in the future.");
+                throw new DateTimeNotValidException(dateAcquired);
             }
             Id = Guid.NewGuid();
             Name = name;
@@ -38,7 +39,7 @@ namespace Domain.Abstractions
         {
             if (newValue < 0)
             {
-                throw new ArgumentOutOfRangeException(nameof(newValue), "New value cannot be negative.");
+                throw new MoneyNotValidException(new Money(newValue,Value.Currency));
             }
             Value = new Money(newValue, Value.Currency);
         }
