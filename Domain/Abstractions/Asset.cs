@@ -19,10 +19,6 @@ namespace Domain.Abstractions
             {
                 throw new ArgumentException("Name cannot be null or empty.", nameof(name));
             }
-            if (value.Amount < 0)
-            {
-                throw new MoneyNotValidException(value);
-            }
             if (dateAcquired > DateTime.Now)
             {
                 throw new DateTimeNotValidException(dateAcquired);
