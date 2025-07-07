@@ -1,5 +1,6 @@
 ﻿using Domain;
 using Domain.Abstractions;
+using Domain.Exceptions;
 using Domain.ValueObjects;
 
 namespace Domain.Abstractions;
@@ -23,11 +24,11 @@ public abstract class Liability : Entity, IMoneytisable
         }
         if (Amount.Amount < 0)
         {
-            throw new ArgumentOutOfRangeException(nameof(Amount), "Amount cannot be negative.");
+            throw new MoneyNotValidException(Amount);
         }
         if (incurred > DateTime.Now)
         {
-            throw new ArgumentOutOfRangeException(nameof(incurred), "Date incurred cannot be in the future.");
+            throw new DateTimeNotValidException(incurred);
         }
         DateIncurred = incurred;
         Name = name;
@@ -38,7 +39,7 @@ public abstract class Liability : Entity, IMoneytisable
     {
         if (payment < 0)
         {
-            throw new ArgumentOutOfRangeException(nameof(payment), "Payment cannot be negative.");
+            throw new MoneyNotValidException(new Money(payment,Value.Currency));
         }
         Value = new Money(Math.Max(0, Value.Amount - payment), Value.Currency);
     }
