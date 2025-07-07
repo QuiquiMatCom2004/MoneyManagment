@@ -22,10 +22,6 @@ public abstract class Liability : Entity, IMoneytisable
         {
             throw new ArgumentException("Name cannot be null or empty.", nameof(name));
         }
-        if (Amount.Amount < 0)
-        {
-            throw new MoneyNotValidException(Amount);
-        }
         if (incurred > DateTime.Now)
         {
             throw new DateTimeNotValidException(incurred);
