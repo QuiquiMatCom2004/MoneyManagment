@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Domain.Exceptions;
+using Domain.Entities;
 
 namespace Domain.Abstractions
 {
@@ -16,6 +17,16 @@ namespace Domain.Abstractions
         public Money TotalExpenses { get; protected set; } = new Money(0, "USD");
         public Money NetCashFlow => TotalIncome - TotalExpenses;
         protected List<Transaction> Transactions { get; set; } = new List<Transaction>();
+
+        public CashFlow(DateTime startDate, DateTime endDate)
+        {
+            if (startDate > endDate)
+                throw new DateTimeNotValidException(startDate,endDate);
+            StartDate = startDate;
+            EndDate = endDate;
+            TotalIncome = new Money(0, "USD");
+            TotalExpenses = new Money(0, "USD");
+        }
         public virtual void AddTransaction(Transaction transaction)
         {
             if(transaction.TransactionDate > EndDate || transaction.TransactionDate < StartDate)
