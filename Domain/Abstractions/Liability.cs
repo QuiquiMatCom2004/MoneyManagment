@@ -14,6 +14,7 @@ public abstract class Liability : Entity, IMoneytisable
     public DateTime DateIncurred { get; set; }
 
     public Guid Id { get; protected set; }
+    public LiabilityCategorys Categorys { get; set; } = LiabilityCategorys.Other;
 
     protected Liability(string name, Money Amount, DateTime incurred)
     {
