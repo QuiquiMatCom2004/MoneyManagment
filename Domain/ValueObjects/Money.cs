@@ -1,18 +1,20 @@
-﻿namespace Domain.ValueObjects;
+﻿using Domain.Exceptions;
 
-public struct Money
+namespace Domain.ValueObjects;
+
+public class Money
 {
     public decimal Amount { get; }
     public string Currency { get; }
     public Money(decimal amount, string currency)
     {
-        if (amount < 0)
-        {
-            throw new ArgumentOutOfRangeException(nameof(amount), "Amount cannot be negative.");
-        }
         if (string.IsNullOrWhiteSpace(currency))
         {
             throw new ArgumentException("Currency cannot be null or empty.", nameof(currency));
+        }
+        if (amount < 0)
+        {
+            throw new MoneyNotValidException(amount,currency);
         }
         Amount = amount;
         Currency = currency;
