@@ -5,14 +5,15 @@ namespace Domain.Abstractions
 {
     public abstract class Asset : Entity, IMoneytisable
     {
-        public Guid Id { get; }
-        public string Name { get; set; }
-        public Money Value { get; private set; }
+        public Guid Id { get; } = Guid.NewGuid();
+        public string Name { get; set; } = string.Empty;
+        public Money Value { get; private set; } = new Money(0, "USD"); // Default value, can be changed later
 
         public Money MonthlyIncome => Calculate();
 
-        public DateTime DateAcquired { get; set; }
+        public DateTime DateAcquired { get; set; } = DateTime.Now;
 
+        public AssetCategorys Category { get; set; } = AssetCategorys.Other;
         protected Asset(string name, Money value, DateTime dateAcquired)
         {
             if (string.IsNullOrWhiteSpace(name))
