@@ -1,17 +1,30 @@
-using Application.Handlers.Test;
+using MoneyManagment;
 using FastEndpoints;
 using FastEndpoints.Security;
+using FastEndpoints.Swagger;
+using Infrastructure.DB;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.RegisterServices();
 
 // Add services to the container.
 builder.Services.AddAuthenticationJwtBearer(s => s.SigningKey = "The secret used to sign tokens"); 
 builder.Services.AddAuthorization();
 builder.Services.AddFastEndpoints();
+builder.Services.SwaggerDocument();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 
-builder.Services.AddScoped<TestCommandHandler>();
+builder.Services.AddDbContext<MyDBContext>(
+    options => options.UseMySql(
+        builder.Configuration.GetConnectionString("MySQLConnection"),
+        ServerVersion.AutoDetect(builder.Configuration.GetConnectionString("MySQLConnection")
+        )
+    )
+);
+
 
 var app = builder.Build();
 
@@ -24,7 +37,8 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseAuthentication()
-    .UseAuthorization();
+    .UseAuthorization()
+    .UseSwaggerGen();
 
 app.UseFastEndpoints();
 
