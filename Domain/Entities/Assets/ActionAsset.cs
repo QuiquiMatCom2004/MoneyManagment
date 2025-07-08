@@ -12,24 +12,18 @@ namespace Domain.Entities.Assets
     public class ActionAsset : Asset
     {
         public decimal DividendYield { get; set; } // Percentage of dividend yield
+
+        private ActionAsset() : base(string.Empty, new Money(0, "USD"), DateTime.MinValue)
+        {
+
+        }
         public ActionAsset(string name, Money value, DateTime dateAcquired, decimal dividendYield) : base(name, value, dateAcquired)
         {
-            if (string.IsNullOrWhiteSpace(name))
-            {
-                throw new ArgumentException("Name cannot be null or empty.", nameof(name));
-            }
-            if (value.Amount < 0)
-            {
-                throw new MoneyNotValidException(value);
-            }
-            if (dateAcquired > DateTime.Now)
-            {
-                throw new DateTimeNotValidException(dateAcquired);
-            }
             if (dividendYield < 0)
             {
                 throw new ArgumentException("Dividend yield cannot be negative.", nameof(dividendYield));
             }
+            Category = AssetCategorys.Actions;
 
             DividendYield = dividendYield;
         }
