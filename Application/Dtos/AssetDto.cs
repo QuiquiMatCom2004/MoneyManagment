@@ -1,8 +1,12 @@
-﻿namespace Application.Dtos;
+﻿using Domain.ValueObjects;
 
-public class AssetDto
+namespace Application.Dtos;
+
+public class AssetDto : EntityDto
 {
-    public Guid Id { get; set; } = Guid.Empty;
-    public decimal Value { get; set; } = 0;
+    public Money Value { get; set; } = new Money(0,"USD");
+    public string Name { get; set; } = string.Empty;
+    public DateTime DateAcquired { get; set; } = DateTime.Now;
+    public Money MonthlyIncome { get; set; } = new Money(0,"USD");
     public string Category { get; set; } = string.Empty;
 }
