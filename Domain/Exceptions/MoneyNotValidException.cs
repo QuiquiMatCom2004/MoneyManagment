@@ -15,8 +15,12 @@ namespace Domain.Exceptions
         public MoneyNotValidException(string message) : base(message)
         {
         }
-        public MoneyNotValidException(Money money) 
+        public MoneyNotValidException(Money money)
             : base($"The money value '{money.Amount}' with currency '{money.Currency}' is not valid.")
+        {
+        }
+        public MoneyNotValidException(decimal amount, string currency)
+            : base($"The money value '{amount}' with currency '{currency}' is not valid.")
         {
         }
     }
